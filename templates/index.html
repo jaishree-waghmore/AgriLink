@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgriLink - Farm to Processor, before it spoils</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav>
+  <div class="brand">🌾 Agri<span>Link</span></div>
+  <div class="tabs">
+    <button data-tab="dashboard" class="active">📊 Dashboard</button>
+    <button data-tab="market">🛒 Marketplace</button>
+    <button data-tab="processors">🏭 Processors</button>
+    <button data-tab="map">🗺️ Live Map</button>
+    <button data-tab="add">➕ List Produce</button>
+  </div>
+</nav>
+
+<section id="tab-dashboard" class="tab active">
+  <div class="hero">
+    <h1>Save the harvest. <span>Before it spoils.</span></h1>
+    <p>AgriLink matches farmers with food processors in real time, using spoilage countdowns, distance and price to find the best buyer for every lot.</p>
+    <div class="sdg"><span>SDG 2 · Zero Hunger</span><span>SDG 12 · Responsible Consumption</span><span>SDG 8 · Decent Work</span></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><small>Produce listed</small><b id="s_kg" data-suffix=" kg">0</b></div>
+    <div class="stat warn"><small>Urgent lots (≤3 days)</small><b id="s_urgent">0</b></div>
+    <div class="stat good"><small>Food rescued via deals</small><b id="s_rescued" data-suffix=" kg">0</b></div>
+    <div class="stat good"><small>Extra farmer income</small><b id="s_income" data-prefix="₹">0</b></div>
+  </div>
+  <div class="grid2">
+    <div class="panel"><h3>Available produce by crop (kg)</h3><canvas id="chartCrop"></canvas></div>
+    <div class="panel"><h3>Raw vs processed value (₹)</h3><canvas id="chartValue"></canvas></div>
+  </div>
+  <div class="panel"><h3>⚡ Live deal feed</h3><ul id="feed" class="feed"></ul></div>
+</section>
+
+<section id="tab-market" class="tab">
+  <div class="filters">
+    <input id="q" placeholder="🔍 Search crop or farmer...">
+    <select id="fDistrict"><option value="">All districts</option></select>
+    <select id="fCategory"><option value="">All types</option><option>Crop</option><option>Dairy</option><option>Livestock</option></select>
+    <select id="fSort"><option value="urgency">Most urgent first</option><option value="price">Lowest price</option><option value="quantity">Largest quantity</option></select>
+    <label class="chk"><input type="checkbox" id="fUrgent"> Urgent only</label>
+  </div>
+  <div id="cards" class="cards"></div>
+</section>
+
+<section id="tab-processors" class="tab">
+  <div class="grid2 top">
+    <div><h2>Processor demand board</h2><div id="demands" class="cards one"></div></div>
+    <div class="panel form">
+      <h3>🏭 Post a demand</h3>
+      <input id="d_processor" placeholder="Company name">
+      <input id="d_crop" placeholder="Crop needed (e.g. Tomato)">
+      <input id="d_qty" type="number" placeholder="Quantity needed (kg)">
+      <input id="d_offer" type="number" placeholder="Offer price (₹ per kg)">
+      <select id="d_district"></select>
+      <input id="d_product" placeholder="Product you make (optional)">
+      <input id="d_contact" placeholder="Contact">
+      <button class="btn" id="dBtn">Post demand</button><p class="msg" id="dMsg"></p>
+    </div>
+  </div>
+</section>
+
+<section id="tab-map" class="tab">
+  <div class="legend"><span><i class="dot red"></i> Urgent</span><span><i class="dot orange"></i> Soon</span><span><i class="dot green"></i> Fresh</span><span><i class="dot blue"></i> Processor</span></div>
+  <div id="map"></div>
+</section>
+
+<section id="tab-add" class="tab">
+  <div class="panel form narrow">
+    <h3>🌱 List your produce</h3>
+    <input id="f_farmer" placeholder="Your name">
+    <select id="f_category"><option>Crop</option><option>Dairy</option><option>Livestock</option></select>
+    <input id="f_crop" list="cropList" placeholder="Crop / product (e.g. Tomato)">
+    <datalist id="cropList"></datalist>
+    <div id="hint" class="hint"></div>
+    <input id="f_qty" type="number" placeholder="Quantity (kg)">
+    <input id="f_price" type="number" placeholder="Your price per kg (₹)">
+    <select id="f_district"></select>
+    <label>Harvest date <input id="f_harvest" type="date"></label>
+    <input id="f_shelf" type="number" placeholder="Shelf life (days) - auto-filled for known crops">
+    <input id="f_contact" placeholder="Phone number">
+    <button class="btn" id="fBtn">List produce</button><p class="msg" id="fMsg"></p>
+  </div>
+</section>
+
+<div id="modal" class="modal hidden"><div class="mbox"><button id="mClose">✖</button><div id="mBody"></div></div></div>
+<div id="toast"></div>
+<footer>AgriLink · Built for HackCulture · Agriculture &amp; Food Processing</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>
